@@ -7,18 +7,17 @@ CONFIG_FILE_PATH = "config.ini"
 
 
 def main_menu():
+    print("╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╭╮")
+    print("┃╭━╮┃╱╱╱╱╱╱╱╱╱╱╱╱┃┃")
+    print("┃┃╱╰╋━━┳━╮╭━━┳┳━━┫┃╭┳━━┳━┳━━╮")
+    print("┃┃╱╭┫╭╮┃╭╮┫━━╋┫╭╮┃┃┣┫┃━┫╭┫┃━┫")
+    print("┃╰━╯┃╰╯┃┃┃┣━━┃┃╰╯┃╰┫┃┃━┫┃┃┃━┫")
+    print("╰━━━┻━━┻╯╰┻━━┻┻━╮┣━┻┻━━┻╯╰━━╯")
+    print("╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭━╯┃")
+    print("╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰━━╯")
+
+    print("\n Consigliere is a tool for updating your KoLmafia jar file, optimized for MacOS")
     while True:
-        print("╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╭╮")
-        print("┃╭━╮┃╱╱╱╱╱╱╱╱╱╱╱╱┃┃")
-        print("┃┃╱╰╋━━┳━╮╭━━┳┳━━┫┃╭┳━━┳━┳━━╮")
-        print("┃┃╱╭┫╭╮┃╭╮┫━━╋┫╭╮┃┃┣┫┃━┫╭┫┃━┫")
-        print("┃╰━╯┃╰╯┃┃┃┣━━┃┃╰╯┃╰┫┃┃━┫┃┃┃━┫")
-        print("╰━━━┻━━┻╯╰┻━━┻┻━╮┣━┻┻━━┻╯╰━━╯")
-        print("╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭━╯┃")
-        print("╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰━━╯")
-
-        print("\n Consigliere is a tool for updating your KoLmafia jar file, optimized for MacOS")
-
         print("\nMenu:")
         print(f"1: Run the setup script")
         print(f"2: Update Mafia")

@@ -18,6 +18,7 @@ DEFAULT = {
 
 MAFIA_BUILD = {
     'kolmafia_build_url': KOLMAFIA_BUILD_URL,
+    "mafia_folder": USER_ROOT,
     'last_run': '',
     'last_updated': '',
     'jar_version': '',
@@ -82,24 +83,25 @@ def main_menu(config, mafia_folder):
                 print("Invalid choice. Please try again.")
 
 
+def create_config_file():
+    config['DEFAULT'] = DEFAULT
+    config['MAFIA_BUILD'] = MAFIA_BUILD
+    with open(CONFIG_FILE_PATH, 'x') as config_file:
+        config.write(config_file)
+
 def main():
-    config = configparser.ConfigParser()
+    print(OPERATING_SYSTEM)
     # check if config file exists and create it if not
     config_file_exists = os.path.isfile(os.path.join(os.getcwd(), "config.ini"))
     if not config_file_exists:
-        config['DEFAULT'] = DEFAULT
-        config['MAFIA_BUILD'] = MAFIA_BUILD
-        with open(CONFIG_FILE_PATH, 'x') as config_file:
-            config.write(config_file)
-
-    config.read(CONFIG_FILE_PATH)
+        create_config_file()
     # check if configuration has been run, run if false
     for section in CONFIG_FILE_SECTIONS:
         if section in config.sections():
             continue
         else:
             print(f"Config file is missing {section}")
-
+    config.read(CONFIG_FILE_PATH)
     mafia_folder = config['MAFIA_BUILD']['mafia_folder']
     if not mafia_folder:
         set_destination_folder(config)
@@ -108,4 +110,5 @@ def main():
 
 
 if __name__ == "__main__":
+    config = configparser.ConfigParser()
     main()
