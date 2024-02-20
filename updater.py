@@ -1,106 +1,93 @@
-import configparser
-import glob
-import os
 import re
+import os
 import requests
 from bs4 import BeautifulSoup
+import configparser
 from datetime import datetime
-
-# noinspection SpellCheckingInspection
-CONFIG_FILE_PATH = "config.ini"
+import glob
 
 
-def set_config(config, section, option, value):
-    config.set(section, option, value)
-    with open(CONFIG_FILE_PATH, "w") as config_file:
-        config.write(config_file)
-        print(f"Section {section}, option {option}, value {value}")
+def get_version_from_filename(filename):
+    match = re.search(r'-(\d+)\.jar', filename)
+    return match.group(1) if match else None
 
 
-# Check current jar files count
-def get_jar_count(config):
-    mafia_folder = config.get('MAFIA_BUILD', 'mafia_folder', fallback=None)
-    os.chdir(mafia_folder)
-    jar_file_count = 0
-    for file in glob.glob('*.jar'):
-        jar_file_count += 1
-    return jar_file_count
-
-
-def get_jar_version(mafia_folder):
-    script_directory = os.getcwd()
-    os.chdir(mafia_folder)
-    for file in glob.glob('*.jar'):
-        version = re.split('[-.]', file)
-        return version[1]
-    os.chdir(script_directory)
-
-
-def fetch_web_version(config, kolmafia_build_url):
-    config.set('DEFAULT', 'last_run', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+def fetch_web_version(url):
     try:
-        response = requests.get(kolmafia_build_url)
+        response = requests.get(url)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
-        exit(1)
+        raise RuntimeError(f"Error fetching web version: {e}")
+
     soup = BeautifulSoup(response.text, 'html.parser')
-    download_url = kolmafia_build_url + next(link['href'] for link in soup.find_all('a', href=True) if
-                                             link['href'].endswith('.jar'))
-    version = re.split('[-.]', download_url)[-2:-1][0]
-    # print(version)
+    download_url = url + next(link['href'] for link in soup.find_all('a', href=True) if link['href'].endswith('.jar'))
+    version = re.search(r'-(\d+)\.jar', download_url).group(1)
     return download_url, version
 
 
-def purge_duplicates(mafia_folder):
-    script_directory = os.getcwd()
-    os.chdir(mafia_folder)
-    list_of_files = glob.glob('*.jar')
+def download_file(download_url, folder):
+    new_jar_file = os.path.join(folder, os.path.basename(download_url))
+    try:
+        response = requests.get(download_url, stream=True)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"Error downloading file: {e}")
+
+    with open(new_jar_file, 'wb') as file:
+        for chunk in response.iter_content(chunk_size=1024):
+            _ = file.write(chunk) if chunk else None
+    return new_jar_file
+
+
+def purge_duplicates(folder):
+    list_of_files = glob.glob(os.path.join(folder, '*.jar'))
     latest_file = max(list_of_files, key=os.path.getctime)
-    print(latest_file)
     for file in list_of_files:
         if file != latest_file:
             os.remove(file)
-    os.chdir(script_directory)
 
 
-def download_file(download_url, mafia_folder):
-    new_jar_file = os.path.join(mafia_folder, os.path.basename(download_url))
-    try:
-        response = requests.get(download_url, stream=True)
-        response.raise_for_status()  # Raise an exception for any HTTP error
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
-        exit(1)
-    with open(new_jar_file, 'wb') as file:
-        for chunk in response.iter_content(chunk_size=1024):
-            if chunk:
-                file.write(chunk)
-    return new_jar_file
+def download_and_update(config, web_version, mafia_folder, kolmafia_build_url):
+    download_url, _ = fetch_web_version(kolmafia_build_url)
+    new_jar_file = download_file(download_url, mafia_folder)
+    os.chmod(new_jar_file, 0o755)
+
+    # Update the config settings
+    config.set('MAFIA_BUILD', 'jar_version', str(web_version))
+    config.set('MAFIA_BUILD', 'last_updated', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    print("Downloaded and updated to the latest version.")
+    purge_duplicates(mafia_folder)
+    with open('config.ini', 'w') as configfile:
+        config.write(configfile)
 
 
 def main():
     config = configparser.ConfigParser()
-    config.read(CONFIG_FILE_PATH)
+    config.read('config.ini')
     mafia_folder = config.get('MAFIA_BUILD', 'mafia_folder', fallback=None)
     kolmafia_build_url = config.get('MAFIA_BUILD', 'kolmafia_build_url', fallback=None)
-    jar_version_folder = get_jar_version(mafia_folder)
-    download_url, jar_version_web = fetch_web_version(config, kolmafia_build_url)
-    if jar_version_folder == jar_version_web:
-        print("Latest version of Mafia is already installed")
+    web_url = kolmafia_build_url
+    web_version = fetch_web_version(web_url)[1]
+
+    try:
+        # Attempt to find the latest JAR file
+        local_filename = max(glob.glob(os.path.join(mafia_folder, '*.jar')), key=os.path.getctime)
+        local_version = get_version_from_filename(local_filename)
+        config.set('MAFIA_BUILD', 'last_run', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    except ValueError:
+        print("No JAR file found in the specified folder. Downloading a new one...")
+        download_and_update(config, web_version, mafia_folder, kolmafia_build_url)
         return
+
+
+    if local_version != web_version:
+        print(f"Updating version of Mafia to {web_version}")
+        download_and_update(config, web_version, mafia_folder, kolmafia_build_url)
     else:
-        print(f"Updating version of Mafia to {jar_version_web}")
-        new_jar_file = download_file(download_url, mafia_folder)
-        os.chmod(new_jar_file, 0o755)
-        set_config(config, 'MAFIA_BUILD', 'jar_version', jar_version_web)
-    jar_file_count = get_jar_count(config)
-    if jar_file_count > 1:
-        purge_duplicates(mafia_folder)
-    jar_version_config_file = config.get('MAFIA_BUILD', 'jar_version', fallback=None)
-    if jar_version_config_file == jar_version_folder and jar_version_web == jar_version_config_file:
-        print("Latest version of Mafia is installed")
-        return
+        print("Latest version of Mafia is already installed.")
+
+    with open('config.ini', 'w') as configfile:
+        config.write(configfile)
 
 
 if __name__ == "__main__":
