@@ -28,13 +28,13 @@ def main_menu():
         choice = input("Select: ")
         match choice:
             case "1":
-                os.system(f'python {setup.__file__}')
+                os.system(f'python3 {setup.__file__}')
                 sys.exit("Goodbye!")
             case "2":
-                os.system(f'python {updater.__file__}')
+                os.system(f'python3 {updater.__file__}')
                 sys.exit("Goodbye!")
             case "3":
-                os.system(f'python {mac_patch.__file__}')
+                os.system(f'python3 {mac_patch.__file__}')
             case "0":
                 sys.exit("Goodbye!")
             case "_":

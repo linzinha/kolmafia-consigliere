@@ -54,15 +54,15 @@ def set_destination_folder():
         mafia_folder = os.path.join(user_root, input_location)
         verify_input = input(f"\nYou entered {mafia_folder}, is this correct? ([y]es/[n]o/[c]ancel): ")
         test = verify_response(verify_input)
-        print(test)
         if not os.path.exists(mafia_folder):
             verify_path = input(
                 f"{mafia_folder} is an Invalid folder path.\n"
                 f"Do you want to create this directory? ([y]es/[n]o/[c]ancel): ")
             verify_response(verify_path)
             os.makedirs(mafia_folder)
-            set_config('MAFIA_BUILD', 'mafia_folder', mafia_folder)
-            return mafia_folder
+        set_config('MAFIA_BUILD', 'mafia_folder', mafia_folder)
+        print("\nMafia folder has been set!\n")
+        return mafia_folder
 
 
 def main_menu(mafia_folder):
@@ -83,9 +83,9 @@ def main_menu(mafia_folder):
             case "1":
                 mafia_folder = set_destination_folder()
             case "2":
-                os.system(f'python {updater.__file__}')
+                os.system(f'python3 {updater.__file__}')
             case "3":
-                os.system(f'python {mac_patch.__file__}')
+                os.system(f'python3 {mac_patch.__file__}')
             case "0":
                 quit()
             case "_":
@@ -106,7 +106,6 @@ def main():
         create_config_file()
     # check if configuration has been run, run if false
     for section in CONFIG_FILE_SECTIONS:
-        print(f"Section: {section}")
         if section in config.sections():
             continue
         else:
