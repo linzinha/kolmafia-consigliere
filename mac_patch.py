@@ -21,10 +21,17 @@ def symlink():
 def chmod():
     print(jar_file_name)
     os.chmod(os.path.join(mafia_folder, jar_file_name), 0o755)
+
+
 def main():
+    print("\n################################")
+    print("####      Mac    Patch      ####")
+    print("################################\n")
     while True:
-        print("The MacOS patch can be used to create a symlink between the Mafia files in the Application Support "
-              "folder and the location of the Jar file for ease of access to script files and user logs.")
+        print("The MacOS patch can be used to create a symlink between: \n\n"
+              "     a) the Mafia files in the Application Support folder \n"
+              "     b) the location of the Jar file "
+              "This is helpful for accessing script files and user logs.")
 
         print("\nIt can also make an existing Jar file executable")
 
@@ -32,10 +39,9 @@ def main():
         print(f"1: Create symlink")
         print(f"2: Make Jar executable")
         print(f"3: Run both")
-        print(f"4: Return to the main menu")
-        print("0: Exit\n")
+        print(f"0: Return to the main menu\n")
 
-        choice = input("Enter your choice: ")
+        choice = input("Select: ")
         match choice:
             case "1":
                 symlink()
@@ -44,10 +50,8 @@ def main():
             case "3":
                 symlink()
                 chmod()
-            case "4":
-                consigliere.main()
             case "0":
-                sys.exit()
+                quit()
             case "_":
                 print("Invalid choice. Please try again.")
 
