@@ -113,3 +113,6 @@ This is to give you a folder structure like as in Windows, and does this by:
 3. Creating a symlink named the same as the origina folder
 4. Moving the .jar file into the symlink folder
 5. Deleting the `_tmp` folder
+
+**WARNING**: this might be a very dumb thing to do if you have the Mafia .jar file in your root directory, or if there are anything other files the same folder as your .jar.
+**Consider yourself warned!!**
