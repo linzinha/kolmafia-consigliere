@@ -12,10 +12,25 @@ def symlink():
         if os.path.islink(mafia_folder):
             print("Symlink already exists")
         else:
+            list_files = os.listdir(mafia_folder)
+            if len(list_files) > 1:
+                file_count = len(list_files) - 1
+                print("found {} additional files in that location".format(file_count))
+                for file in list_files:
+                    if not file.endswith(".jar"):
+                        print(file)
+                confirm = input("Are you sure you want to continue? (y/n): ")
+                if confirm != "y":
+                    return
+            print("Moving .jar folder to a temporary directory...")
             os.rename(mafia_folder, temp_mafia_folder)
+            print("Done. Creating symlink...")
             os.symlink(mafia_library, mafia_folder)
+            print("Done. Moving jar file into the symlink folder...")
             os.rename(os.path.join(temp_mafia_folder, jar_file_name), os.path.join(mafia_folder, jar_file_name))
+            print("Done. Removing temporary directory...")
             shutil.rmtree(temp_mafia_folder)
+            print("Done.")
 
 
 def chmod():
