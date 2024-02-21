@@ -1,3 +1,5 @@
+A mafia updater optimized for Mac!
+
 # Installation and setup
 
 ## Clone the project and run it
