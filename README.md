@@ -54,7 +54,7 @@ Enter the destination folder path (or c to [c]ancel)
 ```
 Set New Destination Folder Path: /Users/linzinha/`Documents/KoLmafia`
 
-You entered /Users/lnzna/Documents/KoLmafia, is this correct? ([y]es/[n]o/[c]ancel): `y`
+You entered /Users/linzinha/Documents/KoLmafia, is this correct? ([y]es/[n]o/[c]ancel): `y`
 ```
 Mafia folder has been set!
 
