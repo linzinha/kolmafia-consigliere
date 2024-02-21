@@ -116,3 +116,51 @@ This is to give you a folder structure like as in Windows, and does this by:
 
 **WARNING**: this might be a very dumb thing to do if you have the Mafia .jar file in your root directory, or if there are any other files the same folder as your .jar that you don't want deleted.
 **Consider yourself warned!!**
+
+## If additional files are found in the .jar file location:
+
+```
+################################
+####      Mac    Patch      ####
+################################
+
+The MacOS patch can be used to create a symlink between: 
+
+     a) the Mafia files in the Application Support folder 
+     b) the location of the Jar file This is helpful for accessing script files and user logs.
+
+It can also make an existing Jar file executable
+
+Menu:
+1: Create symlink
+2: Make Jar executable
+3: Run both
+0: Return to the main menu
+```
+
+Select: `1`
+
+```
+found 4 additional files in that location
+important_file.txt
+important_file4.txt
+important_file3.txt
+important_file2.txt
+```
+Are you sure you want to continue? (y/n): `n`
+
+*When selecting `n` at this step, the  Mac Patch menu is returned*
+```
+The MacOS patch can be used to create a symlink between: 
+
+     a) the Mafia files in the Application Support folder 
+     b) the location of the Jar file This is helpful for accessing script files and user logs.
+
+It can also make an existing Jar file executable
+
+Menu:
+1: Create symlink
+2: Make Jar executable
+3: Run both
+0: Return to the main menu
+```
