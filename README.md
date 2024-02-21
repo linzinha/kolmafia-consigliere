@@ -108,11 +108,11 @@ However, if you don't need to update and have a manually downloaded .jar file yo
 
 Additionally, the Mac patch file has an option to create a sym link between the installed Mafia content and the location of the .jar file
 This is to give you a folder structure like as in Windows, and does this by:
-1. Temporarily moving the .jar file into a another folder named after its perent with `_tmp_` appended at the end
+1. Temporarily moving the .jar file into a another folder named after its perent with `_tmp` appended at the end
 2. Deleting the .jar file's containing folder
 3. Creating a symlink named the same as the origina folder
 4. Moving the .jar file into the symlink folder
 5. Deleting the `_tmp` folder
 
-**WARNING**: this might be a very dumb thing to do if you have the Mafia .jar file in your root directory, or if there are anything other files the same folder as your .jar.
+**WARNING**: this might be a very dumb thing to do if you have the Mafia .jar file in your root directory, or if there are any other files the same folder as your .jar that you don't want deleted.
 **Consider yourself warned!!**
