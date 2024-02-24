@@ -1,4 +1,4 @@
-A mafia updater optimized for Mac!
+A mafia updater for either MacOS or Windows!
 
 # Installation and setup
 
@@ -13,14 +13,14 @@ A mafia updater optimized for Mac!
 ```
 ## Run the setup script to map the tool to either a new or existing Mafia location
 =
-╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╭╮
-┃╭━╮┃╱╱╱╱╱╱╱╱╱╱╱╱┃┃
-┃┃╱╰╋━━┳━╮╭━━┳┳━━┫┃╭┳━━┳━┳━━╮
-┃┃╱╭┫╭╮┃╭╮┫━━╋┫╭╮┃┃┣┫┃━┫╭┫┃━┫
-┃╰━╯┃╰╯┃┃┃┣━━┃┃╰╯┃╰┫┃┃━┫┃┃┃━┫
-╰━━━┻━━┻╯╰┻━━┻┻━╮┣━┻┻━━┻╯╰━━╯
-╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭━╯┃
-╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰━━╯
+╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮
+┃╭━╮┃╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃
+┃┃ ╰╋━━┳━━━╮╭━━┳┳━━┫┃╭┳━━━┳━━┳━━━╮
+┃┃ ╭┫╭╮┃ ╭╮ ┫━━╋┫╭╮┃┃┣┫ ┃━┫╭━┫ ┃━┫
+┃╰━╯┃╰╯┃ ┃┃ ┣━━┃┃╰╯┃╰┫┃ ┃━┫┃ ┃ ┃━┫
+╰━━━┻━━┻━╯╰━┻━━┻┻━╮┣━┻┻━━━┻╯ ╰━━━╯
+╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭━╯┃
+╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰━━╯
 
  Consigliere is a tool for updating your KoLmafia jar file, optimized for MacOS
 
@@ -63,26 +63,13 @@ Menu:
 2: Update Mafia
 3: Run MacOS Patch fix
 0: Exit
-
-Select: 0
-Goodbye!
 ```
+Select: `0`
+
+Goodbye!
 
 # Running the updater
-
 ```
-python3 consigliere.py
-╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╭╮
-┃╭━╮┃╱╱╱╱╱╱╱╱╱╱╱╱┃┃
-┃┃╱╰╋━━┳━╮╭━━┳┳━━┫┃╭┳━━┳━┳━━╮
-┃┃╱╭┫╭╮┃╭╮┫━━╋┫╭╮┃┃┣┫┃━┫╭┫┃━┫
-┃╰━╯┃╰╯┃┃┃┣━━┃┃╰╯┃╰┫┃┃━┫┃┃┃━┫
-╰━━━┻━━┻╯╰┻━━┻┻━╮┣━┻┻━━┻╯╰━━╯
-╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭━╯┃
-╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰━━╯
-
- Consigliere is a tool for updating your KoLmafia jar file, optimized for MacOS
-
 Menu:
 1: Run the setup script
 2: Update Mafia
@@ -94,9 +81,8 @@ Select: `2`
 ```
 No JAR file found in the specified folder. Downloading a new one...
 Downloaded and updated to the latest version.
-Goodbye!
 ```
-You can also run the updater script independently, after the config script has been run **at least once**:
+You can also run the updater script independently, after `option1` **or** the `configure.py` script has been run **at least once**:
 ```
 python3 updater.py
 Latest version of Mafia is already installed.
@@ -163,4 +149,21 @@ Menu:
 2: Make Jar executable
 3: Run both
 0: Return to the main menu
+```
+## If you attempt to run this on any operating system other than MacOS:
+```
+Menu:
+1: Set destination folder [CURRENTLY C:\Users\Linzinha\Documents\KoLmafia]
+2: Update Mafia
+3: Run MacOS Patch fix
+0: Exit
+```
+Select: `3`
+```
+################################
+####      Mac    Patch      ####
+################################
+
+This patch is NOT meant to be run on Windows computers,
+returning to the main menu.
 ```
