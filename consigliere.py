@@ -2,20 +2,19 @@ import mac_patch
 import setup
 import sys
 import updater
-import os
 
 CONFIG_FILE_PATH = "config.ini"
 
 
 def main_menu():
-    print("╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╭╮")
-    print("┃╭━╮┃╱╱╱╱╱╱╱╱╱╱╱╱┃┃")
-    print("┃┃╱╰╋━━┳━╮╭━━┳┳━━┫┃╭┳━━┳━┳━━╮")
-    print("┃┃╱╭┫╭╮┃╭╮┫━━╋┫╭╮┃┃┣┫┃━┫╭┫┃━┫")
-    print("┃╰━╯┃╰╯┃┃┃┣━━┃┃╰╯┃╰┫┃┃━┫┃┃┃━┫")
-    print("╰━━━┻━━┻╯╰┻━━┻┻━╮┣━┻┻━━┻╯╰━━╯")
-    print("╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭━╯┃")
-    print("╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰━━╯")
+    print("╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮")
+    print("┃╭━╮┃╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃")
+    print("┃┃ ╰╋━━┳━━━╮╭━━┳┳━━┫┃╭┳━━━┳━━┳━━━╮")
+    print("┃┃ ╭┫╭╮┃ ╭╮ ┫━━╋┫╭╮┃┃┣┫ ┃━┫╭━┫ ┃━┫")
+    print("┃╰━╯┃╰╯┃ ┃┃ ┣━━┃┃╰╯┃╰┫┃ ┃━┫┃ ┃ ┃━┫")
+    print("╰━━━┻━━┻━╯╰━┻━━┻┻━╮┣━┻┻━━━┻╯ ╰━━━╯")
+    print("╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭━╯┃")
+    print("╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰━━╯")
 
     print("\n Consigliere is a tool for updating your KoLmafia jar file, optimized for MacOS")
     while True:

@@ -5,6 +5,7 @@ import constants
 import sys
 
 
+# set_config takes in inputs to change the values of an entry on the config file
 def set_config(section, option, value):
     constants.CONFIG.set(section, option, value)
     with open(constants.CONFIG_FILE, "w") as config_file:
@@ -13,6 +14,8 @@ def set_config(section, option, value):
         print(f"{option}: {value}")
 
 
+# at multiple points, set_destination_folder verifies user input
+# at each point the result of the choice is the same, so verify_response is called to handle the response
 def verify_response(response):
     if response in constants.RESPONSE_OPTIONS['YES_OPTIONS']:
         return True
@@ -22,6 +25,9 @@ def verify_response(response):
         main()
 
 
+# interactive function where user identifies where their mafia .jar file should be
+# user_root identifies the user's root/home folder, and the user is prompted to complete the path to their .jar file
+# maybe TODO make this a popup window for folder selection
 def set_destination_folder():
     user_root = os.path.join(constants.CONFIG['DEFAULT']['user_root'], '')
     while True:
@@ -31,7 +37,8 @@ def set_destination_folder():
         verify_response(input_location)
         mafia_folder = os.path.join(user_root, input_location)
         verify_input = input(f"\nYou entered {mafia_folder}, is this correct? ([y]es/[n]o/[c]ancel): ")
-        if not os.path.exists(mafia_folder):
+        verify_response(verify_input)
+        if not os.path.exists(mafia_folder):  # ask user if they want to create the parent folder if it doesn't exist
             verify_path = input(
                 f"{mafia_folder} is an Invalid folder path.\n"
                 f"Do you want to create this directory? ([y]es/[n]o/[c]ancel): ")
@@ -47,7 +54,6 @@ def main_menu(mafia_folder):
     print("####      Installation    Setup      ####")
     print("#########################################\n")
     while True:
-        # Fetch the destination folder from the configuration
         print("Menu:")
         print(f"1: Set destination folder [CURRENTLY {mafia_folder}]")
         print(f"2: Update Mafia")
@@ -69,6 +75,7 @@ def main_menu(mafia_folder):
                 print("Invalid choice. Please try again.")
 
 
+# if config.ini is missing in the script folder, this function is called to create one
 def create_config_file():
     constants.CONFIG['DEFAULT'] = constants.DEFAULT
     constants.CONFIG['MAFIA_BUILD'] = constants.MAFIA_BUILD
@@ -86,9 +93,13 @@ def main():
         if section in constants.CONFIG.sections():
             continue
         else:
-            print(f"Config file is missing {section}")
+            # TODO manage partial config files more gracefully/automatically
+            print(f"Config file is missing {section}.\n"
+                  f"Delete the existing config.ini in the consigliere script folder \n"
+                  f"and rerun the configuration")
     constants.CONFIG.read(constants.CONFIG_FILE)
     mafia_folder = constants.CONFIG['MAFIA_BUILD']['mafia_folder']
+    # forces set_destination_folder to run if mafia_folder is empty on the config file
     if not mafia_folder:
         set_destination_folder()
 
