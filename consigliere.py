@@ -1,5 +1,5 @@
 import mac_patch
-import setup
+import configure
 import sys
 import updater
 
@@ -27,7 +27,7 @@ def main_menu():
         choice = input("Select: ")
         match choice:
             case "1":
-                setup.main()
+                configure.main()
             case "2":
                 updater.main()
             case "3":
