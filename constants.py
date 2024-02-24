@@ -24,6 +24,7 @@ MAFIA_BUILD = {
     'jar_hash': ''
 }
 
+CONFIG.read(CONFIG_FILE)
 MAFIA_FOLDER = CONFIG.get('MAFIA_BUILD', 'mafia_folder', fallback=None)
 TEMP_MAFIA_FOLDER = f"{MAFIA_FOLDER}_tmp"
 JAR_VERSION = CONFIG.get('MAFIA_BUILD', 'jar_version', fallback=None)

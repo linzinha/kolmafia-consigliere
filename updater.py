@@ -80,7 +80,6 @@ def download_and_update(web_version, mafia_folder, kolmafia_build_url):
 
 def main():
     # read the config file and fetch the latest version from the website
-    constants.CONFIG.read(constants.CONFIG_FILE)
     web_version = fetch_web_version(constants.KOLMAFIA_BUILD_URL)[1]
     # Attempt to locate a local jar file for comparison, and if none is found,
     # go straight to downloading the latest version (updating last_run in the config file first)
