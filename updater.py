@@ -41,18 +41,22 @@ def purge_duplicates(folder):
 
 # Called by main if an update is needed
 def download_and_update(download_url, web_version):
+    constants.CONFIG.read(constants.CONFIG_FILE)
     # defines the destination of the downloaded file, then tries to download it
     # raises an exception if the download request fails, if successful the download is chunked
     new_jar_file = os.path.join(constants.MAFIA_FOLDER, os.path.basename(download_url))
+    print(new_jar_file)
+
     try:
         response = requests.get(download_url, stream=True)
         response.raise_for_status()
-        with open(new_jar_file, 'wb') as file:
-            for chunk in response.iter_content(chunk_size=1024):
-                _ = file.write(chunk) if chunk else None
-
     except requests.exceptions.RequestException as e:
         raise RuntimeError(f"Error downloading file: {e}")
+
+    with open(new_jar_file, 'wb') as file:
+        for chunk in response.iter_content(chunk_size=1024):
+            _ = file.write(chunk) if chunk else None
+
     # Update the config file, is the function in configure.py really needed?
     constants.CONFIG.set('MAFIA_BUILD', constants.JAR_VERSION, str(web_version))
     constants.CONFIG.set('MAFIA_BUILD', 'last_updated', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))

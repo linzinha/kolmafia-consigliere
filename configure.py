@@ -21,6 +21,7 @@ def verify_response(response):
 # maybe make this a popup window for folder selection?
 def set_destination_folder():
     user_root = os.path.join(constants.CONFIG['DEFAULT']['user_root'], '')
+    constants.CONFIG.read(constants.CONFIG_FILE)
     while True:
         input_location = input(f"\nEnter the destination folder path (or c to [c]ancel)\n"
                                f"--------------\n"
@@ -35,7 +36,7 @@ def set_destination_folder():
                 f"Do you want to create this directory? ([y]es/[n]o/[c]ancel): ")
             verify_response(verify_path)
             os.makedirs(mafia_folder)
-        constants.CONFIG.set('MAFIA_BUILD', constants.MAFIA_FOLDER, mafia_folder)
+        constants.CONFIG.set('MAFIA_BUILD', "mafia_folder", mafia_folder)
         with open(constants.CONFIG_FILE, 'w') as configfile:
             constants.CONFIG.write(configfile)
         print("\nMafia folder has been set!\n")
