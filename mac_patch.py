@@ -1,18 +1,18 @@
-import configparser
 import os
 import shutil
-import sys
-
+import constants
 import consigliere
+import time
+constants.CONFIG.read(constants.CONFIG_FILE)
 
 
 def symlink():
-    mafia_library = os.path.join(USER_ROOT, "Library", "Application Support", "KoLmafia", "")
+    mafia_library = os.path.join(constants.USER_ROOT, "Library", "Application Support", "KoLmafia", "")
     if os.path.isdir(mafia_library):
-        if os.path.islink(mafia_folder):
+        if os.path.islink(constants.MAFIA_FOLDER):
             print("Symlink already exists")
         else:
-            list_files = os.listdir(mafia_folder)
+            list_files = os.listdir(constants.MAFIA_FOLDER)
             if len(list_files) > 1:
                 file_count = len(list_files) - 1
                 print("found {} additional files in that location".format(file_count))
@@ -23,25 +23,34 @@ def symlink():
                 if confirm != "y":
                     return
             print("Moving .jar folder to a temporary directory...")
-            os.rename(mafia_folder, temp_mafia_folder)
+            os.rename(constants.MAFIA_FOLDER, constants.TEMP_MAFIA_FOLDER)
             print("Done. Creating symlink...")
-            os.symlink(mafia_library, mafia_folder)
+            os.symlink(mafia_library, constants.MAFIA_FOLDER)
             print("Done. Moving jar file into the symlink folder...")
-            os.rename(os.path.join(temp_mafia_folder, jar_file_name), os.path.join(mafia_folder, jar_file_name))
+            os.rename(os.path.join(constants.TEMP_MAFIA_FOLDER, constants.JAR_FILE_NAME),
+                      os.path.join(constants.MAFIA_FOLDER, constants.JAR_FILE_NAME))
             print("Done. Removing temporary directory...")
-            shutil.rmtree(temp_mafia_folder)
+            shutil.rmtree(constants.TEMP_MAFIA_FOLDER)
             print("Done.")
 
 
 def chmod():
-    print(jar_file_name)
-    os.chmod(os.path.join(mafia_folder, jar_file_name), 0o755)
+    print(constants.JAR_FILE_NAME)
+    os.chmod(os.path.join(constants.MAFIA_FOLDER, constants.JAR_FILE_NAME), 0o755)
 
 
 def main():
     print("\n################################")
     print("####      Mac    Patch      ####")
     print("################################\n")
+
+    if constants.OPERATING_SYSTEM != "MacOS":
+        time.sleep(0.3)
+        print(f"This patch is NOT meant to be run on {constants.OPERATING_SYSTEM} computers,\n"
+              f"returning to the main menu.\n\n")
+        time.sleep(5)
+        consigliere.main()
+
     while True:
         print("The MacOS patch can be used to create a symlink between: \n\n"
               "     a) the Mafia files in the Application Support folder \n"
@@ -72,12 +81,4 @@ def main():
 
 
 if __name__ == "__main__":
-    CONFIG_FILE_PATH = "config.ini"
-    config = configparser.ConfigParser()
-    config.read(CONFIG_FILE_PATH)
-    USER_ROOT = os.path.expanduser("~")  # Starting path for the script execution
-    mafia_folder = config.get('MAFIA_BUILD', 'mafia_folder', fallback=None)
-    temp_mafia_folder = f"{mafia_folder}_tmp"
-    jar_version = config.get('MAFIA_BUILD', 'jar_version', fallback=None)
-    jar_file_name = f"KoLmafia-{jar_version}.jar"
     main()

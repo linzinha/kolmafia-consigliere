@@ -1,51 +1,29 @@
-import configparser
 import os
-import platform
-import sys
 import updater
 import mac_patch
-
-# Constants
-CONFIG_FILE_PATH = 'config.ini'
-CONFIG_FILE_SECTIONS = ['MAFIA_BUILD']
-OPERATING_SYSTEM = platform.platform().split('-')[0]
-USER_ROOT = os.path.expanduser("~")  # Starting path for the script execution
-KOLMAFIA_BUILD_URL = 'https://ci.kolmafia.us/job/Kolmafia/lastSuccessfulBuild/'
-RESPONSE_OPTIONS = {'YES_OPTIONS': ['y', 'yes'], 'NO_OPTIONS': ['n', 'no'], 'CANCEL_OPTIONS': ['c', 'cancel']}
-DEFAULT = {
-    'os': OPERATING_SYSTEM,
-    'user_root': USER_ROOT
-}
-
-MAFIA_BUILD = {
-    'kolmafia_build_url': KOLMAFIA_BUILD_URL,
-    "mafia_folder": USER_ROOT,
-    'last_run': '',
-    'last_updated': '',
-    'jar_version': '',
-    'jar_hash': ''
-}
+import constants
+import sys
 
 
 def set_config(section, option, value):
-    config.set(section, option, value)
-    with open(CONFIG_FILE_PATH, "w") as config_file:
-        config.write(config_file)
+    constants.CONFIG.set(section, option, value)
+    with open(constants.CONFIG_FILE, "w") as config_file:
+        constants.CONFIG.write(config_file)
         option = str(option).replace('_', ' ')
         print(f"{option}: {value}")
 
 
 def verify_response(response):
-    if response in RESPONSE_OPTIONS['YES_OPTIONS']:
+    if response in constants.RESPONSE_OPTIONS['YES_OPTIONS']:
         return True
-    if response in RESPONSE_OPTIONS['NO_OPTIONS']:
+    if response in constants.RESPONSE_OPTIONS['NO_OPTIONS']:
         set_destination_folder()
-    if response in RESPONSE_OPTIONS['CANCEL_OPTIONS']:
+    if response in constants.RESPONSE_OPTIONS['CANCEL_OPTIONS']:
         main()
 
 
 def set_destination_folder():
-    user_root = os.path.join(config['DEFAULT']['user_root'], '')
+    user_root = os.path.join(constants.CONFIG['DEFAULT']['user_root'], '')
     while True:
         input_location = input(f"\nEnter the destination folder path (or c to [c]ancel)\n"
                                f"--------------\n"
@@ -53,7 +31,6 @@ def set_destination_folder():
         verify_response(input_location)
         mafia_folder = os.path.join(user_root, input_location)
         verify_input = input(f"\nYou entered {mafia_folder}, is this correct? ([y]es/[n]o/[c]ancel): ")
-        test = verify_response(verify_input)
         if not os.path.exists(mafia_folder):
             verify_path = input(
                 f"{mafia_folder} is an Invalid folder path.\n"
@@ -83,20 +60,20 @@ def main_menu(mafia_folder):
             case "1":
                 mafia_folder = set_destination_folder()
             case "2":
-                os.system(f'python3 {updater.__file__}')
+                updater.main()
             case "3":
-                os.system(f'python3 {mac_patch.__file__}')
+                mac_patch.main()
             case "0":
-                quit()
+                sys.exit("Goodbye!")
             case "_":
                 print("Invalid choice. Please try again.")
 
 
 def create_config_file():
-    config['DEFAULT'] = DEFAULT
-    config['MAFIA_BUILD'] = MAFIA_BUILD
-    with open(CONFIG_FILE_PATH, 'x') as config_file:
-        config.write(config_file)
+    constants.CONFIG['DEFAULT'] = constants.DEFAULT
+    constants.CONFIG['MAFIA_BUILD'] = constants.MAFIA_BUILD
+    with open(constants.CONFIG_FILE, 'x') as config_file:
+        constants.CONFIG.write(config_file)
 
 
 def main():
@@ -105,13 +82,13 @@ def main():
     if not config_file_exists:
         create_config_file()
     # check if configuration has been run, run if false
-    for section in CONFIG_FILE_SECTIONS:
-        if section in config.sections():
+    for section in constants.CONFIG_FILE_SECTIONS:
+        if section in constants.CONFIG.sections():
             continue
         else:
             print(f"Config file is missing {section}")
-    config.read(CONFIG_FILE_PATH)
-    mafia_folder = config['MAFIA_BUILD']['mafia_folder']
+    constants.CONFIG.read(constants.CONFIG_FILE)
+    mafia_folder = constants.CONFIG['MAFIA_BUILD']['mafia_folder']
     if not mafia_folder:
         set_destination_folder()
 
@@ -119,5 +96,4 @@ def main():
 
 
 if __name__ == "__main__":
-    config = configparser.ConfigParser()
     main()

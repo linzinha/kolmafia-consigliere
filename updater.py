@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import configparser
 from datetime import datetime
 import glob
+import time
 
 
 def get_version_from_filename(filename):
@@ -55,7 +56,8 @@ def download_and_update(config, web_version, mafia_folder, kolmafia_build_url):
     # Update the config settings
     config.set('MAFIA_BUILD', 'jar_version', str(web_version))
     config.set('MAFIA_BUILD', 'last_updated', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-    print("Downloaded and updated to the latest version.")
+    time.sleep(2)
+    print("Downloaded and updated to the latest version.\n\n")
     purge_duplicates(mafia_folder)
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
@@ -74,17 +76,18 @@ def main():
         local_filename = max(glob.glob(os.path.join(mafia_folder, '*.jar')), key=os.path.getctime)
         local_version = get_version_from_filename(local_filename)
         config.set('MAFIA_BUILD', 'last_run', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        time.sleep(0.3)
     except ValueError:
-        print("No JAR file found in the specified folder. Downloading a new one...")
+        print("\nNo JAR file found in the specified folder. Downloading a new one...")
         download_and_update(config, web_version, mafia_folder, kolmafia_build_url)
         return
 
-
     if local_version != web_version:
-        print(f"Updating version of Mafia to {web_version}")
+        print(f"\nUpdating version of Mafia to {web_version}")
         download_and_update(config, web_version, mafia_folder, kolmafia_build_url)
     else:
-        print("Latest version of Mafia is already installed.")
+        time.sleep(2)
+        print("\nLatest version of Mafia is already installed.\n\n")
 
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
