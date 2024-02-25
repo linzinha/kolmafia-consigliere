@@ -44,7 +44,7 @@ def main():
     print("####      Mac    Patch      ####")
     print("################################\n")
 
-    if constants.OPERATING_SYSTEM != "MacOS":
+    if constants.OPERATING_SYSTEM != "macOS":
         time.sleep(0.3)
         print(f"This patch is NOT meant to be run on {constants.OPERATING_SYSTEM} computers,\n"
               f"returning to the main menu.\n\n")
@@ -75,7 +75,7 @@ def main():
                 symlink()
                 chmod()
             case "0":
-                quit()
+                consigliere.main()
             case "_":
                 print("Invalid choice. Please try again.")
 
