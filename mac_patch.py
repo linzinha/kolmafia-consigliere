@@ -1,36 +1,20 @@
 import os
-import shutil
 import constants
 import consigliere
 import time
-constants.CONFIG.read(constants.CONFIG_FILE)
 
 
 def symlink():
     mafia_library = os.path.join(constants.USER_ROOT, "Library", "Application Support", "KoLmafia", "")
+    symlink_folder = os.path.join(constants.MAFIA_FOLDER, "Mafia Files")
+
     if os.path.isdir(mafia_library):
-        if os.path.islink(constants.MAFIA_FOLDER):
-            print("Symlink already exists")
+        if os.path.islink(symlink_folder):
+            time.sleep(1)
+            print(f"\n{constants.bcolors.FAIL}Symlink already exists{constants.bcolors.ENDC}\n\n")
         else:
-            list_files = os.listdir(constants.MAFIA_FOLDER)
-            if len(list_files) > 1:
-                file_count = len(list_files) - 1
-                print("found {} additional files in that location".format(file_count))
-                for file in list_files:
-                    if not file.endswith(".jar"):
-                        print(file)
-                confirm = input("Are you sure you want to continue? (y/n): ")
-                if confirm != "y":
-                    return
-            print("Moving .jar folder to a temporary directory...")
-            os.rename(constants.MAFIA_FOLDER, constants.TEMP_MAFIA_FOLDER)
-            print("Done. Creating symlink...")
-            os.symlink(mafia_library, constants.MAFIA_FOLDER)
-            print("Done. Moving jar file into the symlink folder...")
-            os.rename(os.path.join(constants.TEMP_MAFIA_FOLDER, constants.JAR_FILE_NAME),
-                      os.path.join(constants.MAFIA_FOLDER, constants.JAR_FILE_NAME))
-            print("Done. Removing temporary directory...")
-            shutil.rmtree(constants.TEMP_MAFIA_FOLDER)
+            print(f"{constants.bcolors.OKGREEN}Creating symlink...{constants.bcolors.ENDC}")
+            os.symlink(mafia_library, symlink_folder)
             print("Done.")
 
 
@@ -50,6 +34,8 @@ def main():
               f"returning to the main menu.\n\n")
         time.sleep(5)
         consigliere.main()
+
+    constants.CONFIG.read(constants.CONFIG_FILE)
 
     while True:
         print("The MacOS patch can be used to create a symlink between: \n\n"
@@ -77,7 +63,7 @@ def main():
             case "0":
                 consigliere.main()
             case "_":
-                print("Invalid choice. Please try again.")
+                print(f"\n{constants.bcolors.FAIL}Invalid choice. Please try again.{constants.bcolors.ENDC}\n\n")
 
 
 if __name__ == "__main__":

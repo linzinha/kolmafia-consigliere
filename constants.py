@@ -24,6 +24,17 @@ MAFIA_BUILD = {
     'jar_hash': ''
 }
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 CONFIG.read(CONFIG_FILE)
 MAFIA_FOLDER = CONFIG.get('MAFIA_BUILD', 'mafia_folder', fallback=None)
 TEMP_MAFIA_FOLDER = f"{MAFIA_FOLDER}_tmp"
