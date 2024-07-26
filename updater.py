@@ -1,7 +1,6 @@
 import re
 import os
 import requests
-from bs4 import BeautifulSoup
 from datetime import datetime
 import glob
 import time
@@ -22,11 +21,11 @@ def fetch_web_version(url):
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         raise RuntimeError(f"Error fetching web version: {e}")
+    
+    version = response.json()["name"]
+    url = response.json()["assets"][1]["browser_download_url"]
 
-    soup = BeautifulSoup(response.text, 'html.parser')
-    download_url = url + next(link['href'] for link in soup.find_all('a', href=True) if link['href'].endswith('.jar'))
-    version = re.search(r'-(\d+)\.jar', download_url).group(1)
-    return download_url, version
+    return url, version
 
 
 # purge_duplicates is run every time regardless of whether a new file is downloaded

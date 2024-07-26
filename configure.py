@@ -54,19 +54,21 @@ def main_menu(mafia_folder):
         print(f"3: Run MacOS Patch fix")
         print(f"0: Exit\n")
 
-        choice = input("Select: ")
+        choice = int(input("Select: "))
 
         match choice:
-            case "1":
+            case 1:
                 mafia_folder = set_destination_folder()
-            case "2":
+            case 2:
                 updater.main()
-            case "3":
+            case 3:
                 mac_patch.main()
-            case "0":
+            case 4:
                 sys.exit("Goodbye!")
-            case "_":
-                print("Invalid choice. Please try again.")
+            case _:
+                mac_patch.main()
+                # print("test")
+                # print(f"\n{constants.bcolors.FAIL}Invalid choice. Please try again.{constants.bcolors.ENDC}\n\n")
 
 
 # if config.ini is missing in the script folder, this function is called to create one

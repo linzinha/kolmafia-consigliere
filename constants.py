@@ -7,7 +7,7 @@ CONFIG_FILE = 'config.ini'
 CONFIG_FILE_SECTIONS = ['MAFIA_BUILD']
 OPERATING_SYSTEM = platform.platform().split('-')[0]
 USER_ROOT = os.path.expanduser("~")  # Starting path for the script execution
-KOLMAFIA_BUILD_URL = 'https://ci.kolmafia.us/job/Kolmafia/lastSuccessfulBuild/'
+KOLMAFIA_BUILD_URL = 'https://api.github.com/repos/kolmafia/kolmafia/releases/latest'
 RESPONSE_OPTIONS = {'YES_OPTIONS': ['y', 'yes'], 'NO_OPTIONS': ['n', 'no'], 'CANCEL_OPTIONS': ['c', 'cancel']}
 
 DEFAULT = {
